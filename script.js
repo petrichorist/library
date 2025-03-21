@@ -1,17 +1,24 @@
 'use strict';
 
-const books = [];
+const body = document.querySelector('body');
+const add = document.querySelector('.add');
+const container = document.querySelector('.container');
+
+const myLibrary = [];
 
 function Book(title, author, pages, read) {
   this.title = title;
   this.author = author;
   this.pages = pages;
+  this.read = read;
   this.id = crypto.randomUUID();
 
-  if (read == 'yes' || read == 'Yes') {
+  if (read == true || read == 'Yes' || read == 'yes') {
     this.read = true;
-  } else if (read == 'no' || read == 'No') {
+  } else if (read == false || read == 'No' || read == 'no') {
     this.read = false;
+  } else {
+    this.read = undefined;
   }
 
   console.log(
@@ -21,29 +28,26 @@ function Book(title, author, pages, read) {
   );
 }
 
-function addBook() {
-  let title = prompt("What's the title of this book?");
-  let author = prompt('Who is the author?');
+function addBookToLibrary() {
+  let title = prompt("What's the title?");
+  let author = prompt("Who's the author?");
   let pages = prompt('Enter the number of pages:');
   let read = prompt('Have you read it? Yes/No');
 
   let book = new Book(title, author, pages, read);
-  books.push(book);
-}
 
-function del() {
-  let del = prompt('Choose an index entry to remove the corresponding book:');
-
-  if (del != undefined || del != null) {
-    delete books[del];
-  } else {
-    console.log("You didn't enter a correct index entry...");
-  }
+  myLibrary.push(book);
+  displayBooks();
 }
 
 function displayBooks() {
-  console.log('\nCurrent books in library:');
-  books.forEach(book => {
+  container.textContent = '';
+  myLibrary.forEach(book => {
+    container.innerHTML += `<br/>${book.title} by ${book.author}, ${book.pages} pages, ${book.read ? 'already read' : 'not read yet'}`;
     console.log(`ID: ${book.id} - ${book.title} by ${book.author}`);
   });
 }
+
+add.addEventListener('click', () => {
+  addBookToLibrary();
+});

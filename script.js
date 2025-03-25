@@ -1,8 +1,8 @@
 'use strict';
 
 const body = document.querySelector('body');
-const add = document.querySelector('.add');
 const container = document.querySelector('.container');
+const add = document.querySelector('.add');
 
 const myLibrary = [];
 
@@ -20,18 +20,17 @@ function Book(title, author, pages, read) {
   } else {
     this.read = undefined;
   }
-
-  console.log(
-    `${this.title} by ${this.author}, ${this.pages} pages, ${
-      this.read ? 'already read' : 'not read yet'
-    }`
-  );
 }
 
+Book.prototype.toggleReadStatus = function () {
+  this.read = !this.read;
+  displayBooks();
+};
+
 function addBookToLibrary() {
-  let title = prompt("What's the title?");
-  let author = prompt("Who's the author?");
-  let pages = prompt('Enter the number of pages:');
+  let title = prompt('Title');
+  let author = prompt('Author');
+  let pages = prompt('Number of pages');
   let read = prompt('Have you read it? Yes/No');
 
   let book = new Book(title, author, pages, read);
@@ -42,12 +41,33 @@ function addBookToLibrary() {
 
 function displayBooks() {
   container.textContent = '';
+
   myLibrary.forEach(book => {
-    container.innerHTML += `<br/>${book.title} by ${book.author}, ${book.pages} pages, ${book.read ? 'already read' : 'not read yet'}`;
-    console.log(`ID: ${book.id} - ${book.title} by ${book.author}`);
+    container.innerHTML += `<div class="card" data-id="${book.id}"><span class="title">${book.title}</span><br/>Author: ${book.author}<br/>Pages: ${book.pages}<br/>${book.read ? 'already read' : 'not read yet'}<div class="buttons"><button class="read" data-id="${book.id}">Read</button><br/><button class="delete" data-id="${book.id}">Delete</button></div></div>`;
   });
 }
 
 add.addEventListener('click', () => {
   addBookToLibrary();
+});
+
+container.addEventListener('click', function (e) {
+  if (e.target.matches('.read')) {
+    const bookId = e.target.getAttribute('data-id');
+    const bookIndex = myLibrary.findIndex(book => book.id === bookId);
+
+    if (bookIndex !== -1) {
+      myLibrary[bookIndex].toggleReadStatus();
+    }
+  }
+
+  if (e.target.matches('.delete')) {
+    const bookId = e.target.getAttribute('data-id');
+    const bookIndex = myLibrary.findIndex(book => book.id === bookId);
+
+    if (bookIndex !== -1) {
+      myLibrary.splice(bookIndex, 1);
+      displayBooks();
+    }
+  }
 });

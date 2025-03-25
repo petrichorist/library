@@ -43,7 +43,7 @@ function displayBooks() {
   container.textContent = '';
 
   myLibrary.forEach(book => {
-    container.innerHTML += `<div class="card" data-id="${book.id}"><span class="title">${book.title}</span><br/>Author: ${book.author}<br/>Pages: ${book.pages}<br/>${book.read ? 'already read' : 'not read yet'}<div class="buttons"><button class="read" data-id="${book.id}">Read</button><br/><button class="delete" data-id="${book.id}">Delete</button></div></div>`;
+    container.innerHTML += `<div class="card" data-id="${book.id}"><span class="title">${book.title}</span><br/>Author: ${book.author}<br/>Pages: ${book.pages}<br/>${book.read ? 'Already read' : 'Haven\'t read yet'}<div class="buttons"><button class="read" data-id="${book.id}">Read</button><br/><button class="delete" data-id="${book.id}">Delete</button></div></div>`;
   });
 }
 
